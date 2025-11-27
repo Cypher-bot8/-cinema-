@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gold Cinema System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">Gold Cinema</div>
+            <ul class="nav-links">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#productions" class="nav-link">Productions</a></li>
+                <li><a href="#performances" class="nav-link">Performances</a></li>
+                <li><a href="#account" class="nav-link">My Account</a></li>
+                <li><a href="#admin" class="nav-link">Admin</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home" class="section active-section">
+        <div class="container">
+            <div class="hero">
+                <h1>Welcome to Gold Cinema</h1>
+                <p>Experience the best in movies, plays, and concerts</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" onclick="showSection('productions')">Browse Productions</button>
+                    <button class="btn btn-secondary" onclick="showSection('account')">Create Account</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Productions Section -->
+    <section id="productions" class="section">
+        <div class="container">
+            <h2>Current Productions</h2>
+            <div class="filter-tabs">
+                <button class="tab-btn active" data-type="all">All</button>
+                <button class="tab-btn" data-type="movie">Movies</button>
+                <button class="tab-btn" data-type="play">Plays</button>
+                <button class="tab-btn" data-type="concert">Concerts</button>
+            </div>
+            <div id="productions-grid" class="productions-grid"></div>
+        </div>
+    </section>
+
+    <!-- Performances Section -->
+    <section id="performances" class="section">
+        <div class="container">
+            <h2>Upcoming Performances</h2>
+            <div id="performances-list" class="performances-list"></div>
+        </div>
+    </section>
+
+    <!-- Account Section -->
+    <section id="account" class="section">
+        <div class="container">
+            <h2>My Account</h2>
+            <div id="account-content">
+                <div class="account-tabs">
+                    <button class="tab-btn active" data-tab="login">Login</button>
+                    <button class="tab-btn" data-tab="register">Register</button>
+                </div>
+
+                <!-- Login Form -->
+                <div id="login-form" class="form-container active-tab">
+                    <form onsubmit="handleLogin(event)">
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" id="login-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Customer ID</label>
+                            <input type="text" id="login-id" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </form>
+                </div>
+
+                <!-- Register Form -->
+                <div id="register-form" class="form-container">
+                    <form onsubmit="handleRegister(event)">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>First Name *</label>
+                                <input type="text" id="reg-firstname" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Last Name *</label>
+                                <input type="text" id="reg-lastname" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Residential Address *</label>
+                            <input type="text" id="reg-address" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>City *</label>
+                                <input type="text" id="reg-city" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Zip Code *</label>
+                                <input type="text" id="reg-zip" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Mobile Number *</label>
+                            <input type="tel" id="reg-mobile" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address *</label>
+                            <input type="email" id="reg-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Need Support? Advisor Name</label>
+                            <input type="text" id="reg-advisor" placeholder="Optional">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Create Account</button>
+                    </form>
+                </div>
+
+                <!-- Customer Dashboard -->
+                <div id="customer-dashboard" class="dashboard" style="display:none;">
+                    <div class="dashboard-header">
+                        <h3>Welcome, <span id="customer-name"></span>!</h3>
+                        <button class="btn btn-secondary" onclick="logout()">Logout</button>
+                    </div>
+                    <div class="dashboard-info">
+                        <p><strong>Customer ID:</strong> <span id="dashboard-id"></span></p>
+                        <p><strong>Email:</strong> <span id="dashboard-email"></span></p>
+                        <p><strong>Mobile:</strong> <span id="dashboard-mobile"></span></p>
+                        <p><strong>Address:</strong> <span id="dashboard-address"></span></p>
+                    </div>
+                    <h4>My Bookings</h4>
+                    <div id="customer-bookings" class="bookings-list"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admin Section -->
+    <section id="admin" class="section">
+        <div class="container">
+            <h2>Admin Panel</h2>
+            <div class="admin-tabs">
+                <button class="tab-btn active" data-admin-tab="customers">Customers</button>
+                <button class="tab-btn" data-admin-tab="productions-admin">Productions</button>
+                <button class="tab-btn" data-admin-tab="performances-admin">Performances</button>
+                <button class="tab-btn" data-admin-tab="test">System Testing</button>
+            </div>
+
+            <!-- Customers Admin -->
+            <div id="customers-admin" class="admin-panel active-admin-tab">
+                <h3>Customer Management</h3>
+                <div id="customers-table" class="data-table"></div>
+            </div>
+
+            <!-- Productions Admin -->
+            <div id="productions-admin" class="admin-panel">
+                <h3>Production Management</h3>
+                <button class="btn btn-primary" onclick="showAddProduction()">Add New Production</button>
+                <div id="add-production-form" class="form-container" style="display:none; margin-top:20px;">
+                    <form onsubmit="addProduction(event)">
+                        <div class="form-group">
+                            <label>Production Name *</label>
+                            <input type="text" id="prod-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Type *</label>
+                            <select id="prod-type" required>
+                                <option value="">Select Type</option>
+                                <option value="movie">Movie</option>
+                                <option value="play">Play</option>
+                                <option value="concert">Concert</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Production</button>
+                        <button type="button" class="btn btn-secondary" onclick="hideAddProduction()">Cancel</button>
+                    </form>
+                </div>
+                <div id="productions-table" class="data-table"></div>
+            </div>
+
+            <!-- Performances Admin -->
+            <div id="performances-admin" class="admin-panel">
+                <h3>Performance Management</h3>
+                <button class="btn btn-primary" onclick="showAddPerformance()">Add New Performance</button>
+                <div id="add-performance-form" class="form-container" style="display:none; margin-top:20px;">
+                    <form onsubmit="addPerformance(event)">
+                        <div class="form-group">
+                            <label>Production *</label>
+                            <select id="perf-production" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label>Performance Date *</label>
+                            <input type="datetime-local" id="perf-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Total Seats *</label>
+                            <input type="number" id="perf-seats" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Price *</label>
+                            <input type="number" id="perf-price" min="0" step="0.01" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Performance</button>
+                        <button type="button" class="btn btn-secondary" onclick="hideAddPerformance()">Cancel</button>
+                    </form>
+                </div>
+                <div id="performances-table" class="data-table"></div>
+            </div>
+
+            <!-- System Testing -->
+            <div id="test-admin" class="admin-panel">
+                <h3>System Testing</h3>
+                <button class="btn btn-primary" onclick="runSystemTests()">Run All Tests</button>
+                <div id="test-results" class="test-results"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Modal -->
+    <div id="booking-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeBookingModal()">&times;</span>
+            <h3>Book Tickets</h3>
+            <div id="booking-details"></div>
+            <form onsubmit="confirmBooking(event)">
+                <div class="form-group">
+                    <label>Number of Tickets *</label>
+                    <input type="number" id="ticket-quantity" min="1" required>
+                </div>
+                <p class="booking-note">Please login or create an account to complete your booking.</p>
+                <button type="submit" class="btn btn-primary">Confirm Booking</button>
+                <button type="button" class="btn btn-secondary" onclick="closeBookingModal()">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
